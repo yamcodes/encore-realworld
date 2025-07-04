@@ -1,0 +1,23 @@
+{
+  "name": "encore-prisma-example",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Encore + Prisma Typescript Example",
+  "license": "MPL-2.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "npx prisma generate --schema=users/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "prisma": "^5.22.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "encore.dev": "^1.48.8"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.13.0"
+  }
+}
