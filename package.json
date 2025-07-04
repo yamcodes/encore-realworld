@@ -1,23 +1,30 @@
 {
-  "name": "encore-prisma-example",
-  "private": true,
-  "version": "0.0.1",
-  "description": "Encore + Prisma Typescript Example",
-  "license": "MPL-2.0",
-  "type": "module",
-  "scripts": {
-    "postinstall": "npx prisma generate --schema=users/prisma/schema.prisma"
-  },
-  "devDependencies": {
-    "@types/node": "^20.5.7",
-    "prisma": "^5.22.0",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "encore.dev": "^1.48.8"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.13.0"
-  }
+	"name": "encore-prisma-example",
+	"private": true,
+	"version": "0.0.1",
+	"description": "Encore + Prisma Typescript Example",
+	"license": "MPL-2.0",
+	"type": "module",
+	"scripts": {
+		"postinstall": "npx prisma generate --schema=users/prisma/schema.prisma",
+		"fix": "biome check --write",
+		"check": "biome check",
+		"check:errors": "biome check --diagnostic-level=error",
+		"typecheck": "tsc --noEmit",
+		"clean": "rimraf node_modules pnpm-lock.yaml dist"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.6",
+		"@types/node": "^20.5.7",
+		"prisma": "^5.22.0",
+		"rimraf": "^6.0.1",
+		"typescript": "^5.2.2"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.22.0",
+		"encore.dev": "^1.48.8"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "^4.13.0"
+	}
 }
