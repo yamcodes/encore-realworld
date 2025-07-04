@@ -1,6 +1,7 @@
 import { APIError, api } from "encore.dev/api";
 import type {
 	CreateUserDto,
+	LoginUserDto,
 	Response,
 	UpdateUserDto,
 	UserResponse,
@@ -25,7 +26,10 @@ export const count = api(
 );
 
 /**
- * Method to create a new user
+ * Registration
+ *
+ * No authentication required
+ * @returns a User
  */
 export const create = api(
 	{ method: "POST", path: "/users" },
@@ -38,6 +42,27 @@ export const create = api(
 			return result;
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error creating the user");
+		}
+	},
+);
+
+/**
+ * Login
+ *
+ * No authentication required
+ * @returns a User
+ */
+export const login = api(
+	{ method: "POST", path: "/users/login" },
+	async (data: LoginUserDto): Promise<UserResponse> => {
+		if (!data.email || !data.password) {
+			throw APIError.invalidArgument("Missing required fields");
+		}
+		try {
+			const result = await UserService.login(data);
+			return result;
+		} catch (error) {
+			throw APIError.aborted(error?.toString() || "Error logging in");
 		}
 	},
 );

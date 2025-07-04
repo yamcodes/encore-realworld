@@ -50,6 +50,11 @@ export interface CreateUserDto {
 
 export interface UpdateUserDto extends Partial<CreateUserDto> {}
 
+export interface LoginUserDto {
+	email: string;
+	password: string;
+}
+
 export interface Response {
 	/** Indicates if the request was successful */
 	success: boolean;

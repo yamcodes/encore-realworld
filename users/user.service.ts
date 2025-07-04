@@ -1,6 +1,7 @@
 import { prisma } from "./database";
 import type {
 	CreateUserDto,
+	LoginUserDto,
 	Response,
 	UpdateUserDto,
 	UserResponse,
@@ -9,6 +10,25 @@ import type { User } from "./user.model";
 import { getOffset, paginatedData } from "./utils";
 
 const UserService = {
+	login: async (data: LoginUserDto): Promise<UserResponse> => {
+		const user = await prisma.user.findFirst({ where: { email: data.email } });
+		if (!user) {
+			return {
+				success: false,
+				message: "User not found",
+			};
+		}
+		if (user.password !== data.password) {
+			return {
+				success: false,
+				message: "Invalid password",
+			};
+		}
+		return {
+			success: true,
+			result: user,
+		};
+	},
 	count: async (): Promise<number> => {
 		const count = await prisma.user.count();
 		return count;
