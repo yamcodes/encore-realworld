@@ -11,17 +11,21 @@
 		"check": "biome check",
 		"check:errors": "biome check --diagnostic-level=error",
 		"typecheck": "tsc --noEmit",
-		"clean": "rimraf node_modules pnpm-lock.yaml dist"
+		"clean": "rimraf node_modules pnpm-lock.yaml dist",
+		"db:push": "prisma db push --schema=users/prisma/schema.prisma",
+		"db:generate": "prisma generate --schema=users/prisma/schema.prisma",
+		"db:migrate": "prisma migrate dev --schema=users/prisma/schema.prisma",
+		"db:reset": "prisma migrate reset --schema=users/prisma/schema.prisma"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.0.6",
 		"@types/node": "^20.5.7",
-		"prisma": "^5.22.0",
+		"prisma": "^6.11.1",
 		"rimraf": "^6.0.1",
 		"typescript": "^5.2.2"
 	},
 	"dependencies": {
-		"@prisma/client": "^5.22.0",
+		"@prisma/client": "^6.11.1",
 		"encore.dev": "^1.48.8"
 	},
 	"optionalDependencies": {

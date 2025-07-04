@@ -11,7 +11,7 @@ import UserService from "./user.service";
  * Counts and returns the number of existing users
  */
 export const count = api(
-	{ expose: true, method: "GET", path: "/count/users" },
+	{ method: "GET", path: "/count/users" },
 	async (): Promise<Response> => {
 		try {
 			const result = await UserService.count();
@@ -28,11 +28,11 @@ export const count = api(
  * Method to create a new user
  */
 export const create = api(
-	{ expose: true, method: "POST", path: "/users" },
+	{ method: "POST", path: "/users" },
 	async (data: CreateUserDto): Promise<UserResponse> => {
 		try {
-			if (!data.name || !data.surname) {
-				throw APIError.invalidArgument("Missing fields");
+			if (!data.username || !data.email || !data.password) {
+				throw APIError.invalidArgument("Missing required fields");
 			}
 			const result = await UserService.create(data);
 			return result;
@@ -46,7 +46,7 @@ export const create = api(
  * Get all users data
  */
 export const read = api(
-	{ expose: true, method: "GET", path: "/users" },
+	{ method: "GET", path: "/users" },
 	async ({
 		page,
 		limit,
@@ -67,8 +67,8 @@ export const read = api(
  * Get user data by id
  */
 export const readOne = api(
-	{ expose: true, method: "GET", path: "/users/:id" },
-	async ({ id }: { id: number }): Promise<UserResponse> => {
+	{ method: "GET", path: "/users/:id" },
+	async ({ id }: { id: string }): Promise<UserResponse> => {
 		try {
 			const result = await UserService.findOne(id);
 			return result;
@@ -82,12 +82,12 @@ export const readOne = api(
  * Update user data
  */
 export const update = api(
-	{ expose: true, method: "PATCH", path: "/users/:id" },
+	{ method: "PATCH", path: "/users/:id" },
 	async ({
 		id,
 		data,
 	}: {
-		id: number;
+		id: string;
 		data: UpdateUserDto;
 	}): Promise<UserResponse> => {
 		try {
@@ -103,8 +103,8 @@ export const update = api(
  * Delete user by id
  */
 export const destroy = api(
-	{ expose: true, method: "DELETE", path: "/users/:id" },
-	async ({ id }: { id: number }): Promise<Response> => {
+	{ method: "DELETE", path: "/users/:id" },
+	async ({ id }: { id: string }): Promise<Response> => {
 		try {
 			const result = await UserService.delete(id);
 			return result;

@@ -22,7 +22,7 @@ const UserService = {
 		};
 	},
 
-	update: async (id: number, data: UpdateUserDto): Promise<UserResponse> => {
+	update: async (id: string, data: UpdateUserDto): Promise<UserResponse> => {
 		const user = await prisma.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
@@ -30,9 +30,10 @@ const UserService = {
 				message: "User not found",
 			};
 		}
-		user.name = data.name || user.name;
-		user.surname = data.surname || user.surname;
-		const updated = await prisma.user.update({ data: user, where: { id } });
+		const updated = await prisma.user.update({
+			where: { id },
+			data,
+		});
 		return {
 			success: true,
 			result: updated,
@@ -57,7 +58,7 @@ const UserService = {
 		};
 	},
 
-	findOne: async (id: number): Promise<UserResponse> => {
+	findOne: async (id: string): Promise<UserResponse> => {
 		const user = await prisma.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
@@ -71,7 +72,7 @@ const UserService = {
 		};
 	},
 
-	delete: async (id: number): Promise<Response> => {
+	delete: async (id: string): Promise<Response> => {
 		const user = await prisma.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
