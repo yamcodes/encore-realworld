@@ -31,7 +31,7 @@ export const count = api(
  * No authentication required
  * @returns a User
  */
-export const create = api(
+export const registration = api(
 	{ method: "POST", path: "/users" },
 	async (data: CreateUserDto): Promise<UserResponse> => {
 		try {
@@ -47,12 +47,12 @@ export const create = api(
 );
 
 /**
- * Login
+ * Authentication
  *
  * No authentication required
  * @returns a User
  */
-export const login = api(
+export const authentication = api(
 	{ method: "POST", path: "/users/login" },
 	async (data: LoginUserDto): Promise<UserResponse> => {
 		if (!data.email || !data.password) {
@@ -89,10 +89,12 @@ export const read = api(
 );
 
 /**
- * Get user data by id
+ * Get Profile
+ *
+ * Authentication optional, returns a Profile
  */
-export const readOne = api(
-	{ method: "GET", path: "/users/:id" },
+export const getProfile = api(
+	{ method: "GET", path: "/profiles/:id" },
 	async ({ id }: { id: string }): Promise<UserResponse> => {
 		try {
 			const result = await UserService.findOne(id);
@@ -104,7 +106,10 @@ export const readOne = api(
 );
 
 /**
- * Update user data
+ * Update User
+ *
+ * Authentication required
+ * @returns a User
  */
 export const update = api(
 	{ method: "PATCH", path: "/users/:id" },
@@ -125,7 +130,10 @@ export const update = api(
 );
 
 /**
- * Delete user by id
+ * Delete User
+ *
+ * Authentication required
+ * @returns a User
  */
 export const destroy = api(
 	{ method: "DELETE", path: "/users/:id" },
