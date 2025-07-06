@@ -6,7 +6,7 @@ import type {
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
-import UserService from "./user.service";
+import * as UserService from "./user.service";
 
 /**
  * Counts and returns the number of existing users
