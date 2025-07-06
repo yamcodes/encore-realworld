@@ -139,7 +139,7 @@ export const destroy = api(
 	{ method: "DELETE", path: "/users/:id" },
 	async ({ id }: { id: string }): Promise<Response> => {
 		try {
-			const result = await UserService.delete(id);
+			const result = await UserService.deleteUser(id);
 			return result;
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error deleting user");
