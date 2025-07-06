@@ -1,6 +1,6 @@
 # Encore + Prisma TypeScript Example
 
-This is a RESTful API Starter with [Prisma](https://prisma.io) as ORM to handle database CRUD operations.
+This is a RESTful API Starter with [Prisma](https://db.io) as ORM to handle database CRUD operations.
 
 ## Developing locally
 

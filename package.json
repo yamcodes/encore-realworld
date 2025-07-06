@@ -6,16 +6,17 @@
 	"license": "MPL-2.0",
 	"type": "module",
 	"scripts": {
-		"postinstall": "npx prisma generate --schema=users/prisma/schema.prisma",
+		"dev": "encore run",
+		"postinstall": "npx prisma generate --schema=database/prisma/schema.prisma",
 		"fix": "biome check --write",
 		"check": "biome check",
 		"check:errors": "biome check --diagnostic-level=error",
 		"typecheck": "tsc --noEmit",
 		"clean": "rimraf node_modules pnpm-lock.yaml dist",
-		"db:push": "prisma db push --schema=users/prisma/schema.prisma",
-		"db:generate": "prisma generate --schema=users/prisma/schema.prisma",
-		"db:migrate": "prisma migrate dev --schema=users/prisma/schema.prisma",
-		"db:reset": "prisma migrate reset --schema=users/prisma/schema.prisma"
+		"db:push": "prisma db push --schema=database/prisma/schema.prisma",
+		"db:generate": "prisma generate --schema=database/prisma/schema.prisma",
+		"db:migrate": "prisma migrate dev --schema=database/prisma/schema.prisma",
+		"db:reset": "prisma migrate reset --schema=database/prisma/schema.prisma"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.0.6",

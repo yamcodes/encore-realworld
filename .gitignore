@@ -4,3 +4,16 @@ encore.gen.cue
 /.encore
 node_modules
 /encore.gen
+
+# Keep environment variables out of version control
+.env
+
+
+# Prisma
+# Prisma generated files
+prisma/migrations/
+*.db
+*.db-journal
+prisma/dev.db
+prisma/dev.db-journal
+generated/

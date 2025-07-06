@@ -1,4 +1,5 @@
-import { prisma } from "./database";
+import type { User } from "@prisma/client";
+import { db } from "../database";
 import type {
 	CreateUserDto,
 	LoginUserDto,
@@ -6,12 +7,11 @@ import type {
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
-import type { User } from "./user.model";
 import { getOffset, paginatedData } from "./utils";
 
 const UserService = {
 	login: async (data: LoginUserDto): Promise<UserResponse> => {
-		const user = await prisma.user.findFirst({ where: { email: data.email } });
+		const user = await db.user.findFirst({ where: { email: data.email } });
 		if (!user) {
 			return {
 				success: false,
@@ -30,12 +30,12 @@ const UserService = {
 		};
 	},
 	count: async (): Promise<number> => {
-		const count = await prisma.user.count();
+		const count = await db.user.count();
 		return count;
 	},
 
 	create: async (data: CreateUserDto): Promise<UserResponse> => {
-		const user = await prisma.user.create({ data });
+		const user = await db.user.create({ data });
 		return {
 			success: true,
 			result: user,
@@ -43,14 +43,14 @@ const UserService = {
 	},
 
 	update: async (id: string, data: UpdateUserDto): Promise<UserResponse> => {
-		const user = await prisma.user.findFirst({ where: { id } });
+		const user = await db.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
 				success: false,
 				message: "User not found",
 			};
 		}
-		const updated = await prisma.user.update({
+		const updated = await db.user.update({
 			where: { id },
 			data,
 		});
@@ -65,11 +65,11 @@ const UserService = {
 		let pagination: any;
 		if (page && limit) {
 			const offset = getOffset(page, limit);
-			const count = await prisma.user.count();
-			users = await prisma.user.findMany({ take: limit, skip: offset });
+			const count = await db.user.count();
+			users = await db.user.findMany({ take: limit, skip: offset });
 			pagination = paginatedData({ size: limit, page, count });
 		} else {
-			users = await prisma.user.findMany();
+			users = await db.user.findMany();
 		}
 		return {
 			success: true,
@@ -79,7 +79,7 @@ const UserService = {
 	},
 
 	findOne: async (id: string): Promise<UserResponse> => {
-		const user = await prisma.user.findFirst({ where: { id } });
+		const user = await db.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
 				success: false,
@@ -93,14 +93,14 @@ const UserService = {
 	},
 
 	delete: async (id: string): Promise<Response> => {
-		const user = await prisma.user.findFirst({ where: { id } });
+		const user = await db.user.findFirst({ where: { id } });
 		if (!user) {
 			return {
 				success: false,
 				message: "User not found",
 			};
 		}
-		await prisma.user.delete({ where: { id } });
+		await db.user.delete({ where: { id } });
 		return {
 			success: true,
 			result: "User deleted successfully",
