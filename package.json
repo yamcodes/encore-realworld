@@ -27,7 +27,8 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^6.11.1",
-		"encore.dev": "^1.48.8"
+		"encore.dev": "^1.48.8",
+		"nanoid": "^5.1.5"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "^4.13.0"
