@@ -15,8 +15,7 @@
 		"clean": "rimraf node_modules pnpm-lock.yaml dist",
 		"db:push": "prisma db push --schema=database/prisma/schema.prisma",
 		"db:generate": "prisma generate --schema=database/prisma/schema.prisma",
-		"db:migrate": "prisma migrate dev --schema=database/prisma/schema.prisma",
-		"db:reset": "prisma migrate reset --schema=database/prisma/schema.prisma",
+		"db:reset": "encore db reset --all",
 		"db:studio": "prisma studio --schema=database/prisma/schema.prisma",
 		"db:print-shadow-uri": "encore db conn-uri encore_prisma_test --shadow",
 		"db:print-uri": "encore db conn-uri encore_prisma_test"

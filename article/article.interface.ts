@@ -57,3 +57,42 @@ export type CreateArticleDto = {
 	body: string;
 	tagList: string[];
 };
+
+export type UpdateArticleDto = Partial<CreateArticleDto>;
+
+/**
+ * Result containing the article and favorite status
+ */
+export type FavoriteArticleResult = {
+	/**
+	 * The article
+	 */
+	article: EnrichedArticle;
+	/**
+	 * Whether the article is favorited
+	 */
+	favorited?: boolean;
+	/**
+	 * The number of favorites
+	 */
+	favoritesCount?: number;
+};
+
+/**
+ * Query parameters for listing articles
+ */
+export type ListArticlesQuery = {
+	authorUsername?: string;
+	favoritedByUsername?: string;
+	tagName?: string;
+	offset?: number;
+	limit?: number;
+};
+
+/**
+ * Query parameters for getting the feed
+ */
+export type FeedArticlesQuery = {
+	offset?: number;
+	limit?: number;
+};

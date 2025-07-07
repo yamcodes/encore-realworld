@@ -5,7 +5,7 @@ import { toResponse } from "./profile.mappers";
 import * as ProfileService from "./profile.service";
 
 export const getProfile = api(
-	{ method: "GET", path: "/profiles/:username", auth: true },
+	{ method: "GET", path: "/profiles/:username" },
 	async ({ username }: { username: string }): Promise<ProfileResponse> => {
 		const { profile, following } = await ProfileService.getProfile(
 			username,
