@@ -13,8 +13,6 @@ const database = new SQLDatabase("encore_prisma_test", {
 	},
 });
 
-console.log("CONNECTION STRING", database.connectionString);
-
 /**
  * A Prisma client for the database.
  */

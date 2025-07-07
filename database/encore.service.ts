@@ -1,6 +1,6 @@
 import { Service } from "encore.dev/service";
 
 /**
- * A dedicated service for the database.
+ * Database service
  */
 export default new Service("database");
