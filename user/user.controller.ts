@@ -61,43 +61,30 @@ export const authentication = api(
 	},
 );
 
-/**
- * Get Profile
- *
- * Authentication optional, returns a Profile
- */
-export const getProfile = api(
-	{ method: "GET", path: "/profiles/:id" },
-	async ({ id }: { id: string }): Promise<UserResponse> => {
+export const getCurrentUser = api(
+	{ method: "GET", path: "/user" },
+	async (): Promise<UserResponse> => {
 		try {
+			const id = "123"; // TODO: get the id from the token
 			const result = await UserService.findOne(id);
 			return result;
 		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error getting user data");
+			throw APIError.aborted(error?.toString() || "Error getting current user");
 		}
 	},
 );
 
-/**
- * Update User
- *
- * Authentication required
- * @returns a User
- */
-export const update = api(
-	{ method: "PATCH", path: "/users/:id" },
-	async ({
-		id,
-		data,
-	}: {
-		id: string;
-		data: UpdateUserDto;
-	}): Promise<UserResponse> => {
+export const updateCurrentUser = api(
+	{ method: "PUT", path: "/user" },
+	async (data: UpdateUserDto): Promise<UserResponse> => {
 		try {
+			const id = "123"; // TODO: get the id from the token
 			const result = await UserService.update(id, data);
 			return result;
 		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error updating user");
+			throw APIError.aborted(
+				error?.toString() || "Error updating current user",
+			);
 		}
 	},
 );
