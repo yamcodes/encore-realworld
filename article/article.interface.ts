@@ -1,5 +1,25 @@
 import type { Article, Tag, User } from "@prisma/client";
 
+export interface ArticleResponse {
+	article: {
+		slug: string;
+		title: string;
+		description: string;
+		body: string;
+		tagList: string[];
+		createdAt: string;
+		updatedAt: string;
+		favorited: boolean;
+		favoritesCount: number;
+		author: {
+			username: string;
+			bio: string | null;
+			image: string | null;
+			following: boolean;
+		};
+	};
+}
+
 export interface ArticlesResponse {
 	articles: Array<{
 		slug: string;

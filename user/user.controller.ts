@@ -1,3 +1,4 @@
+import { getAuthData } from "@encore/auth";
 import { APIError, api } from "encore.dev/api";
 import type {
 	CreateUserDto,
@@ -11,7 +12,7 @@ import * as UserService from "./user.service";
  * Counts and returns the number of existing users
  */
 export const count = api(
-	{ method: "GET", path: "/count/users" },
+	{ method: "GET", path: "/count/users", auth: false },
 	async (): Promise<{
 		count: number;
 	}> => {
@@ -33,7 +34,7 @@ export const count = api(
  * @returns a User
  */
 export const registration = api(
-	{ method: "POST", path: "/users" },
+	{ method: "POST", path: "/users", auth: false },
 	async (data: CreateUserDto): Promise<UserResponse> => {
 		try {
 			const result = await UserService.create(data);
@@ -51,7 +52,7 @@ export const registration = api(
  * @returns a User
  */
 export const authentication = api(
-	{ method: "POST", path: "/users/login" },
+	{ method: "POST", path: "/users/login", auth: false },
 	async (data: LoginUserDto): Promise<UserResponse> => {
 		try {
 			const result = await UserService.login(data);
@@ -63,10 +64,11 @@ export const authentication = api(
 );
 
 export const getCurrentUser = api(
-	{ method: "GET", path: "/user" },
+	{ method: "GET", path: "/user", auth: true },
 	async (): Promise<UserResponse> => {
 		try {
-			const id = "123"; // TODO: get the id from the token
+			const id = getAuthData()?.userID;
+			if (!id) throw APIError.unauthenticated("no user id");
 			const result = await UserService.findOne(id);
 			return result;
 		} catch (error) {
@@ -76,10 +78,11 @@ export const getCurrentUser = api(
 );
 
 export const updateCurrentUser = api(
-	{ method: "PUT", path: "/user" },
+	{ method: "PUT", path: "/user", auth: true },
 	async (data: UpdateUserDto): Promise<UserResponse> => {
 		try {
-			const id = "123"; // TODO: get the id from the token
+			const id = getAuthData()?.userID;
+			if (!id) throw APIError.unauthenticated("no user id");
 			const result = await UserService.update(id, data);
 			return result;
 		} catch (error) {

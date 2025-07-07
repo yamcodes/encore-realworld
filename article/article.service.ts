@@ -1,7 +1,7 @@
 import { db } from "@/database";
 import { slugify } from "@/shared/utils";
 import type { CreateArticleDto } from "./article.interface";
-import { toResponse } from "./article.mappers";
+import { toArticlesResponse, toResponse } from "./article.mappers";
 
 export const createArticle = async (
 	article: CreateArticleDto,
@@ -42,4 +42,18 @@ export const createArticle = async (
 	return toResponse(createdArticle, {
 		currentUserId,
 	});
+};
+
+/**
+ * Simple list articles
+ */
+export const listArticles = async () => {
+	const articles = await db.article.findMany({
+		include: {
+			author: true,
+		},
+	});
+
+	// return toArticlesResponse(articles);
+	return articles;
 };

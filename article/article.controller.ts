@@ -1,11 +1,33 @@
-import { api } from "encore.dev/api";
-import type { CreateArticleDto } from "./article.interface";
-import * as ArticleService from "./articles.service";
+import { getAuthData } from "@encore/auth";
+import { APIError, api } from "encore.dev/api";
+import log from "encore.dev/log";
+import type { ArticleResponse, CreateArticleDto } from "./article.interface";
+import * as ArticleService from "./article.service";
 
 export const createArticle = api(
-	{ method: "POST", path: "/articles" },
-	async (data: CreateArticleDto) => {
-		const currentUserId = "123"; // TODO: get current user id from request
+	{ method: "POST", path: "/articles", auth: true },
+	async (data: CreateArticleDto): Promise<ArticleResponse> => {
+		const currentUserId = getAuthData()?.userID;
+		if (!currentUserId) throw APIError.unauthenticated("no user id");
 		return ArticleService.createArticle(data, currentUserId);
+	},
+);
+
+export const listArticles = api(
+	{ method: "GET", path: "/articles" },
+	async (): Promise<{
+		articles: {
+			id: string;
+			slug: string;
+			title: string;
+			description: string;
+			body: string;
+		}[];
+	}> => {
+		log.info("listArticles");
+		const articles = await ArticleService.listArticles();
+		return {
+			articles,
+		};
 	},
 );

@@ -16,7 +16,10 @@
 		"db:push": "prisma db push --schema=database/prisma/schema.prisma",
 		"db:generate": "prisma generate --schema=database/prisma/schema.prisma",
 		"db:migrate": "prisma migrate dev --schema=database/prisma/schema.prisma",
-		"db:reset": "prisma migrate reset --schema=database/prisma/schema.prisma"
+		"db:reset": "prisma migrate reset --schema=database/prisma/schema.prisma",
+		"db:studio": "prisma studio --schema=database/prisma/schema.prisma",
+		"db:print-shadow-uri": "encore db conn-uri encore_prisma_test --shadow",
+		"db:print-uri": "encore db conn-uri encore_prisma_test"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.0.6",
