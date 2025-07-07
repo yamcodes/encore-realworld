@@ -78,12 +78,11 @@ export interface Paginated {
 }
 
 export interface UserResponse {
-	/** Indicates if the request was successful */
-	success: boolean;
-	/** Error message if the request was not successful */
-	message?: string;
-	/** User data */
-	result?: UserDto | UserDto[];
-	/** Pagination data */
-	pagination?: Paginated;
+	user: {
+		token: string;
+		email: string;
+		username: string;
+		bio: string | null;
+		image: string | null;
+	};
 }

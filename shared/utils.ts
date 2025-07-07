@@ -1,3 +1,6 @@
+import argon2 from "argon2";
+import bcrypt from "bcrypt";
+import * as jose from "jose";
 import { nanoid } from "nanoid";
 
 export function slugify(...parts: string[]): string {
@@ -12,3 +15,29 @@ export function slugify(...parts: string[]): string {
 	const suffix = nanoid(8);
 	return `${baseSlug}-${suffix}`;
 }
+
+export const hashPassword = async (password: string) => {
+	const isDevelopment = true; // TODO: change to env.NODE_ENV === "development"
+	return isDevelopment
+		? await bcrypt.hash(password, 10)
+		: await argon2.hash(password);
+};
+
+interface JwtPayload extends jose.JWTPayload {
+	uid: string;
+	email: string;
+	username: string;
+}
+
+export const signToken = async (payload: JwtPayload) => {
+	const name = "encore-realworld"; // TODO: get this from package.json or an env variable
+	const rawSecret = "my-secret"; // TODO: change to env.JWT_SECRET
+	const secret = new TextEncoder().encode(rawSecret);
+
+	return await new jose.SignJWT(payload)
+		.setProtectedHeader({ alg: "HS256" })
+		.setExpirationTime("24h")
+		.setAudience(name)
+		.setIssuedAt()
+		.sign(secret);
+};
