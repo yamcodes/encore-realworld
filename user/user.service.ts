@@ -6,7 +6,6 @@ import type {
 	CreateUserDto,
 	LoginUserDto,
 	UpdateUserDto,
-	UserResponse,
 } from "./user.interface";
 
 export const login = async (

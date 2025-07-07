@@ -29,6 +29,9 @@ importers:
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
+      radashi:
+        specifier: ^12.6.0
+        version: 12.6.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.0.6
@@ -298,6 +301,10 @@ packages:
       typescript:
         optional: true
 
+  radashi@12.6.0:
+    resolution: {integrity: sha512-nJcpgS3La+yRlxm4bLjCcjsi1G5VeOycSo8nt5BzSEDWqSY0XNAUAwckvCa8uMHXtZqCK8fntJPXPlLve+vKhA==}
+    engines: {node: '>=16.0.0'}
+
   rimraf@6.0.1:
     resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
     engines: {node: 20 || >=22}
@@ -552,6 +559,8 @@ snapshots:
       '@prisma/engines': 6.11.1
     optionalDependencies:
       typescript: 5.8.3
+
+  radashi@12.6.0: {}
 
   rimraf@6.0.1:
     dependencies:

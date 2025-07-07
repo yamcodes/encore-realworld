@@ -37,7 +37,8 @@
 		"bcrypt": "^6.0.0",
 		"encore.dev": "^1.48.8",
 		"jose": "^6.0.11",
-		"nanoid": "^5.1.5"
+		"nanoid": "^5.1.5",
+		"radashi": "^12.6.0"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "^4.13.0"
