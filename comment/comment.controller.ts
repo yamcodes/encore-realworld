@@ -1,5 +1,5 @@
-import { getAuthData } from "@encore/auth";
 import { APIError, api } from "encore.dev/api";
+import { getAuthData } from "~encore/auth";
 import type { CommentResponse, CommentsResponse } from "./comment.interface";
 import { toCommentResponse, toCommentsResponse } from "./comment.mappers";
 import * as CommentService from "./comment.service";

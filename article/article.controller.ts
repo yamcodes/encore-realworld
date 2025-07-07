@@ -1,5 +1,5 @@
-import { getAuthData } from "@encore/auth";
 import { APIError, api } from "encore.dev/api";
+import { getAuthData } from "~encore/auth";
 import type {
 	ArticleResponse,
 	ArticlesResponse,

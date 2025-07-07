@@ -12,7 +12,7 @@
 		"check": "biome check",
 		"check:errors": "biome check --diagnostic-level=error",
 		"typecheck": "tsc --noEmit",
-		"clean": "rimraf node_modules pnpm-lock.yaml dist",
+		"clean": "rimraf node_modules dist encore.gen encore",
 		"db:push": "prisma db push --schema=database/prisma/schema.prisma",
 		"db:generate": "prisma generate --schema=database/prisma/schema.prisma",
 		"db:reset": "encore db reset --all",
