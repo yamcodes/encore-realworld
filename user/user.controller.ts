@@ -2,7 +2,6 @@ import { APIError, api } from "encore.dev/api";
 import type {
 	CreateUserDto,
 	LoginUserDto,
-	Response,
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
@@ -13,10 +12,12 @@ import * as UserService from "./user.service";
  */
 export const count = api(
 	{ method: "GET", path: "/count/users" },
-	async (): Promise<Response> => {
+	async (): Promise<{
+		count: number;
+	}> => {
 		try {
 			const result = await UserService.count();
-			return { success: true, result };
+			return { count: result };
 		} catch (error) {
 			throw APIError.aborted(
 				error?.toString() || "Error counting existing users",

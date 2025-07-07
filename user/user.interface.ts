@@ -57,15 +57,6 @@ export interface LoginUserDto {
 	password: string;
 }
 
-export interface Response {
-	/** Indicates if the request was successful */
-	success: boolean;
-	/** Error message if the request was not successful */
-	message?: string;
-	/** The result of the request */
-	result?: string | number;
-}
-
 export interface Paginated {
 	/** Total number of results */
 	count: number;
