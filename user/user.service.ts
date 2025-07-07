@@ -1,23 +1,20 @@
-import type { User } from "@prisma/client";
 import { assertNoConflicts } from "@/shared/errors";
-import { hashPassword, signToken } from "@/shared/utils";
+import { hashPassword, signToken, verifyPassword } from "@/shared/utils";
 import { db } from "../database";
 import type {
 	CreateUserDto,
 	LoginUserDto,
-	Response,
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
 import { toResponse } from "./user.mappers";
-import { getOffset, paginatedData } from "./utils";
 
 export const login = async (data: LoginUserDto): Promise<UserResponse> => {
-	const user = await db.user.findFirst({ where: { email: data.email } });
-	if (!user) throw new Error("User not found");
-	if (user.password !== data.password) {
-		throw new Error("Invalid password");
-	}
+	const user = await db.user.findFirstOrThrow({
+		where: { email: data.email },
+	});
+	if (!(await verifyPassword(data.password, user.password)))
+		throw new Error("Invalid credentials");
 	return toResponse(
 		user,
 		await signToken({
@@ -82,34 +79,15 @@ export const update = async (
 	);
 };
 
-export const find = async (
-	page?: number,
-	limit?: number,
-): Promise<UserResponse> => {
-	let users: User[] = [];
-	let pagination: any;
-	if (page && limit) {
-		const offset = getOffset(page, limit);
-		const count = await db.user.count();
-		users = await db.user.findMany({ take: limit, skip: offset });
-		pagination = paginatedData({ size: limit, page, count });
-	} else {
-		users = await db.user.findMany();
-	}
-	return Promise.all(
-		users.map(async (user) => toResponse(user, await signToken(user.id))),
-	);
-};
-
 export const findOne = async (id: string): Promise<UserResponse> => {
 	const user = await db.user.findFirst({ where: { id } });
 	if (!user) throw new Error("User not found");
-	return toResponse(user, await signToken(user.id));
-};
-
-export const deleteUser = async (id: string): Promise<Response> => {
-	const user = await db.user.findFirst({ where: { id } });
-	if (!user) throw new Error("User not found");
-	await db.user.delete({ where: { id } });
-	return "User deleted successfully";
+	return toResponse(
+		user,
+		await signToken({
+			uid: user.id,
+			email: user.email,
+			username: user.username,
+		}),
+	);
 };

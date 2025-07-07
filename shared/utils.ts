@@ -23,6 +23,13 @@ export const hashPassword = async (password: string) => {
 		: await argon2.hash(password);
 };
 
+export const verifyPassword = async (password: string, hash: string) => {
+	const isDevelopment = true; // TODO: change to env.NODE_ENV === "development"
+	return isDevelopment
+		? await bcrypt.compare(password, hash)
+		: await argon2.verify(hash, password);
+};
+
 interface JwtPayload extends jose.JWTPayload {
 	uid: string;
 	email: string;
