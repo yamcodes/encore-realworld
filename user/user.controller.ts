@@ -35,9 +35,6 @@ export const registration = api(
 	{ method: "POST", path: "/users" },
 	async (data: CreateUserDto): Promise<UserResponse> => {
 		try {
-			if (!data.username || !data.email || !data.password) {
-				throw APIError.invalidArgument("Missing required fields");
-			}
 			const result = await UserService.create(data);
 			return result;
 		} catch (error) {
@@ -55,35 +52,11 @@ export const registration = api(
 export const authentication = api(
 	{ method: "POST", path: "/users/login" },
 	async (data: LoginUserDto): Promise<UserResponse> => {
-		if (!data.email || !data.password) {
-			throw APIError.invalidArgument("Missing required fields");
-		}
 		try {
 			const result = await UserService.login(data);
 			return result;
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error logging in");
-		}
-	},
-);
-
-/**
- * Get all users data
- */
-export const read = api(
-	{ method: "GET", path: "/users" },
-	async ({
-		page,
-		limit,
-	}: {
-		page?: number;
-		limit?: number;
-	}): Promise<UserResponse> => {
-		try {
-			const result = await UserService.find(page, limit);
-			return result;
-		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error getting users data");
 		}
 	},
 );
@@ -125,24 +98,6 @@ export const update = api(
 			return result;
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error updating user");
-		}
-	},
-);
-
-/**
- * Delete User
- *
- * Authentication required
- * @returns a User
- */
-export const destroy = api(
-	{ method: "DELETE", path: "/users/:id" },
-	async ({ id }: { id: string }): Promise<Response> => {
-		try {
-			const result = await UserService.deleteUser(id);
-			return result;
-		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error deleting user");
 		}
 	},
 );
