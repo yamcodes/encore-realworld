@@ -1,3 +1,5 @@
+import type { IsEmail, IsURL, MatchesRegexp } from "encore.dev/validate";
+
 export interface UserDto {
 	/** ID of the user */
 	id: string;
@@ -21,7 +23,7 @@ export interface CreateUserDto {
 	 *
 	 * @example "john@example.com"
 	 */
-	email: string;
+	email: string & IsEmail;
 	/**
 	 * Username of the user
 	 *
@@ -39,13 +41,13 @@ export interface CreateUserDto {
 	 *
 	 * @example "https://example.com/image.png"
 	 */
-	image?: string;
+	image?: string & IsURL;
 	/**
 	 * Password of the user
 	 *
 	 * @example "password"
 	 */
-	password: string;
+	password: string & MatchesRegexp<"^[a-zA-Z\\d@$!%*?&]{8,}$">;
 }
 
 export interface UpdateUserDto extends Partial<CreateUserDto> {}
