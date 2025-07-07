@@ -1,12 +1,13 @@
 import type { User } from "@prisma/client";
+import { db } from "@/database";
 import { assertNoConflicts } from "@/shared/errors";
-import { hashPassword, signToken, verifyPassword } from "@/shared/utils";
-import { db } from "../database";
+import { signToken } from "@/shared/utils";
 import type {
 	CreateUserDto,
 	LoginUserDto,
 	UpdateUserDto,
 } from "./user.interface";
+import { hashPassword, verifyPassword } from "./utils";
 
 export const login = async (
 	data: LoginUserDto,

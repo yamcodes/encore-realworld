@@ -1,21 +1,16 @@
-import type { Paginated } from "./user.interface";
+import * as argon2 from "argon2";
+import * as bcrypt from "bcrypt";
 
-type PaginatedParams = {
-	size: number;
-	page: number;
-	count: number;
+export const hashPassword = async (password: string) => {
+	const isDevelopment = true; // TODO: change to env.NODE_ENV === "development"
+	return isDevelopment
+		? await bcrypt.hash(password, 10)
+		: await argon2.hash(password);
 };
 
-export const getOffset = (page: number, size: number): number => {
-	return size * (page - 1);
-};
-
-export const paginatedData = (params: PaginatedParams): Paginated => {
-	const response = {
-		current: params.page,
-		pageSize: params.size,
-		totalPages: Math.ceil(params.count / params.size),
-		count: params.count,
-	};
-	return response;
+export const verifyPassword = async (password: string, hash: string) => {
+	const isDevelopment = true; // TODO: change to env.NODE_ENV === "development"
+	return isDevelopment
+		? await bcrypt.compare(password, hash)
+		: await argon2.verify(hash, password);
 };
