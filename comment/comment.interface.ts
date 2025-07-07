@@ -15,3 +15,28 @@ export type ToCommentsResponseParams = Pick<
 	ToCommentResponseParams,
 	"currentUserId"
 >;
+
+/**
+ * Response for a single comment
+ */
+export type CommentResponse = {
+	comment: {
+		id: string;
+		createdAt: string;
+		updatedAt: string;
+		body: string;
+		author: {
+			username: string;
+			bio: string | null;
+			image: string | null;
+			following: boolean;
+		};
+	};
+};
+
+/**
+ * Response for a list of comments
+ */
+export type CommentsResponse = {
+	comments: CommentResponse["comment"][];
+};

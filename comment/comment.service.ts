@@ -1,10 +1,9 @@
-import type { Comment } from "@prisma/client";
 import { db } from "@/database";
 
 export const listComments = async (
 	articleSlug: string,
 	currentUserId?: string,
-): Promise<Comment[]> => {
+) => {
 	// Verify the article exists
 	const article = await db.article.findFirstOrThrow({
 		where: { slug: articleSlug },
@@ -32,7 +31,7 @@ export const createComment = async (
 	articleSlug: string,
 	body: string,
 	currentUserId: string,
-): Promise<Comment> => {
+) => {
 	// Verify the article exists
 	const article = await db.article.findFirstOrThrow({
 		where: { slug: articleSlug },
