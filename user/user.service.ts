@@ -31,12 +31,11 @@ export const count = async (): Promise<number> => {
 };
 
 export const create = async (data: CreateUserDto): Promise<UserResponse> => {
-	const user = await db.user.create({ data });
 	await assertNoConflicts(
 		"user",
 		{
-			email: user.email,
-			username: user.username,
+			email: data.email,
+			username: data.username,
 		},
 		async (key, value) => {
 			const existing = await db.user.findFirst({
@@ -47,8 +46,8 @@ export const create = async (data: CreateUserDto): Promise<UserResponse> => {
 	);
 	const createdUser = await db.user.create({
 		data: {
-			...user,
-			password: await hashPassword(user.password),
+			...data,
+			password: await hashPassword(data.password),
 		},
 	});
 	const token = await signToken({
@@ -63,25 +62,38 @@ export const update = async (
 	id: string,
 	data: UpdateUserDto,
 ): Promise<UserResponse> => {
-	const user = await db.user.findFirst({ where: { id } });
-	if (!user) throw new Error("User not found");
-	const updated = await db.user.update({
+	await assertNoConflicts(
+		"user",
+		{
+			email: data.email,
+			username: data.username,
+		},
+		async (key, value) => {
+			const existing = await db.user.findFirst({
+				where: { [key]: value },
+			});
+			return Boolean(existing);
+		},
+	);
+	const updatedUser = await db.user.update({
 		where: { id },
-		data,
+		data: {
+			...data,
+			password: data.password ? await hashPassword(data.password) : undefined,
+		},
 	});
 	return toResponse(
-		updated,
+		updatedUser,
 		await signToken({
-			uid: updated.id,
-			email: updated.email,
-			username: updated.username,
+			uid: updatedUser.id,
+			email: updatedUser.email,
+			username: updatedUser.username,
 		}),
 	);
 };
 
 export const findOne = async (id: string): Promise<UserResponse> => {
-	const user = await db.user.findFirst({ where: { id } });
-	if (!user) throw new Error("User not found");
+	const user = await db.user.findFirstOrThrow({ where: { id } });
 	return toResponse(
 		user,
 		await signToken({
