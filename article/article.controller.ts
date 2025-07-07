@@ -2,6 +2,7 @@ import { getAuthData } from "@encore/auth";
 import { APIError, api } from "encore.dev/api";
 import log from "encore.dev/log";
 import type { ArticleResponse, CreateArticleDto } from "./article.interface";
+import { toResponse } from "./article.mappers";
 import * as ArticleService from "./article.service";
 
 export const createArticle = api(
@@ -9,7 +10,13 @@ export const createArticle = api(
 	async (data: CreateArticleDto): Promise<ArticleResponse> => {
 		const currentUserId = getAuthData()?.userID;
 		if (!currentUserId) throw APIError.unauthenticated("no user id");
-		return ArticleService.createArticle(data, currentUserId);
+		const createdArticle = await ArticleService.createArticle(
+			data,
+			currentUserId,
+		);
+		return toResponse(createdArticle, {
+			currentUserId,
+		});
 	},
 );
 

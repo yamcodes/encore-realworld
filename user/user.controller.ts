@@ -6,6 +6,7 @@ import type {
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
+import { toResponse } from "./user.mappers";
 import * as UserService from "./user.service";
 
 /**
@@ -38,7 +39,7 @@ export const registration = api(
 	async (data: CreateUserDto): Promise<UserResponse> => {
 		try {
 			const result = await UserService.create(data);
-			return result;
+			return toResponse(result.user, result.token);
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error creating the user");
 		}
@@ -55,8 +56,8 @@ export const authentication = api(
 	{ method: "POST", path: "/users/login", auth: false },
 	async (data: LoginUserDto): Promise<UserResponse> => {
 		try {
-			const result = await UserService.login(data);
-			return result;
+			const { user, token } = await UserService.login(data);
+			return toResponse(user, token);
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error logging in");
 		}
@@ -70,7 +71,7 @@ export const getCurrentUser = api(
 			const id = getAuthData()?.userID;
 			if (!id) throw APIError.unauthenticated("no user id");
 			const result = await UserService.findOne(id);
-			return result;
+			return toResponse(result.user, result.token);
 		} catch (error) {
 			throw APIError.aborted(error?.toString() || "Error getting current user");
 		}
@@ -84,7 +85,7 @@ export const updateCurrentUser = api(
 			const id = getAuthData()?.userID;
 			if (!id) throw APIError.unauthenticated("no user id");
 			const result = await UserService.update(id, data);
-			return result;
+			return toResponse(result.user, result.token);
 		} catch (error) {
 			throw APIError.aborted(
 				error?.toString() || "Error updating current user",

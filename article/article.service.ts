@@ -1,13 +1,12 @@
 import { db } from "@/database";
 import { slugify } from "@/shared/utils";
 import type { CreateArticleDto } from "./article.interface";
-import { toArticlesResponse, toResponse } from "./article.mappers";
 
 export const createArticle = async (
 	article: CreateArticleDto,
 	currentUserId: string,
 ) => {
-	const createdArticle = await db.article.create({
+	return await db.article.create({
 		data: {
 			slug: slugify(article.title),
 			title: article.title,
@@ -37,10 +36,6 @@ export const createArticle = async (
 				select: { favoritedBy: true },
 			},
 		},
-	});
-
-	return toResponse(createdArticle, {
-		currentUserId,
 	});
 };
 

@@ -1,3 +1,4 @@
+import type { User } from "@prisma/client";
 import { assertNoConflicts } from "@/shared/errors";
 import { hashPassword, signToken, verifyPassword } from "@/shared/utils";
 import { db } from "../database";
@@ -7,22 +8,28 @@ import type {
 	UpdateUserDto,
 	UserResponse,
 } from "./user.interface";
-import { toResponse } from "./user.mappers";
 
-export const login = async (data: LoginUserDto): Promise<UserResponse> => {
+export const login = async (
+	data: LoginUserDto,
+): Promise<{
+	user: User;
+	token: string;
+}> => {
 	const user = await db.user.findFirstOrThrow({
 		where: { email: data.email },
 	});
 	if (!(await verifyPassword(data.password, user.password)))
 		throw new Error("Invalid credentials");
-	return toResponse(
+
+	const token = await signToken({
+		uid: user.id,
+		email: user.email,
+		username: user.username,
+	});
+	return {
 		user,
-		await signToken({
-			uid: user.id,
-			email: user.email,
-			username: user.username,
-		}),
-	);
+		token,
+	};
 };
 
 export const count = async (): Promise<number> => {
@@ -30,7 +37,12 @@ export const count = async (): Promise<number> => {
 	return count;
 };
 
-export const create = async (data: CreateUserDto): Promise<UserResponse> => {
+export const create = async (
+	data: CreateUserDto,
+): Promise<{
+	user: User;
+	token: string;
+}> => {
 	await assertNoConflicts(
 		"user",
 		{
@@ -55,13 +67,16 @@ export const create = async (data: CreateUserDto): Promise<UserResponse> => {
 		email: createdUser.email,
 		username: createdUser.username,
 	});
-	return toResponse(createdUser, token);
+	return { user: createdUser, token };
 };
 
 export const update = async (
 	id: string,
 	data: UpdateUserDto,
-): Promise<UserResponse> => {
+): Promise<{
+	user: User;
+	token: string;
+}> => {
 	await assertNoConflicts(
 		"user",
 		{
@@ -82,24 +97,25 @@ export const update = async (
 			password: data.password ? await hashPassword(data.password) : undefined,
 		},
 	});
-	return toResponse(
-		updatedUser,
-		await signToken({
-			uid: updatedUser.id,
-			email: updatedUser.email,
-			username: updatedUser.username,
-		}),
-	);
+	const token = await signToken({
+		uid: updatedUser.id,
+		email: updatedUser.email,
+		username: updatedUser.username,
+	});
+	return { user: updatedUser, token };
 };
 
-export const findOne = async (id: string): Promise<UserResponse> => {
+export const findOne = async (
+	id: string,
+): Promise<{
+	user: User;
+	token: string;
+}> => {
 	const user = await db.user.findFirstOrThrow({ where: { id } });
-	return toResponse(
-		user,
-		await signToken({
-			uid: user.id,
-			email: user.email,
-			username: user.username,
-		}),
-	);
+	const token = await signToken({
+		uid: user.id,
+		email: user.email,
+		username: user.username,
+	});
+	return { user, token };
 };
