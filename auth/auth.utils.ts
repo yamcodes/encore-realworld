@@ -1,6 +1,6 @@
 import type { Header } from "encore.dev/api";
 import * as jose from "jose";
-import type { JwtPayload } from "@/shared/types";
+import type { JwtPayload } from "~/shared/types";
 
 export const verifyToken = async (token: string) => {
 	const name = "encore-realworld"; // TODO: get this from package.json or an env variable

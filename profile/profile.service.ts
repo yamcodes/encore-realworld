@@ -1,5 +1,5 @@
 import type { User } from "@prisma/client";
-import { db } from "@/database";
+import { db } from "~/database";
 
 export const getProfile = async (
 	username: string,

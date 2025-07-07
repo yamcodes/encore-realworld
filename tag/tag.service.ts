@@ -1,4 +1,4 @@
-import { db } from "@/database";
+import { db } from "~/database";
 
 export const listTags = async (): Promise<string[]> => {
 	const allTags = await db.tag.findMany();

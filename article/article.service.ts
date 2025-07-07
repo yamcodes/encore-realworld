@@ -1,6 +1,6 @@
 // TODO: arguably Dto's shouldn't be known to the service layer
 
-import { db } from "@/database";
+import { db } from "~/database";
 import type {
 	CreateArticleDto,
 	FavoriteArticleResult,

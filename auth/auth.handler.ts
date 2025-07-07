@@ -3,7 +3,7 @@
 import { APIError, Gateway } from "encore.dev/api";
 import { authHandler } from "encore.dev/auth";
 import log from "encore.dev/log";
-import { getToken, verifyToken } from "@/auth/auth.utils";
+import { getToken, verifyToken } from "~/auth/auth.utils";
 import type { AuthData, AuthParams } from "./auth.interface";
 
 /**

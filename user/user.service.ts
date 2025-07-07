@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
-import { db } from "@/database";
-import { assertNoConflicts } from "@/shared/errors";
+import { db } from "~/database";
+import { assertNoConflicts } from "~/shared/errors";
 import type {
 	CreateUserDto,
 	LoginUserDto,

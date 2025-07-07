@@ -1,7 +1,7 @@
 import * as argon2 from "argon2";
 import * as bcrypt from "bcrypt";
 import * as jose from "jose";
-import type { JwtPayload } from "@/shared/types";
+import type { JwtPayload } from "~/shared/types";
 
 export const hashPassword = async (password: string) => {
 	const isDevelopment = true; // TODO: change to env.NODE_ENV === "development"
