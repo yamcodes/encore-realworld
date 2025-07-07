@@ -55,7 +55,7 @@ export type CreateArticleDto = {
 	title: string;
 	description: string;
 	body: string;
-	tagList: string[];
+	tagList?: string[];
 };
 
 export type UpdateArticleDto = Partial<CreateArticleDto>;
@@ -82,9 +82,9 @@ export type FavoriteArticleResult = {
  * Query parameters for listing articles
  */
 export type ListArticlesQuery = {
-	authorUsername?: string;
-	favoritedByUsername?: string;
-	tagName?: string;
+	author?: string;
+	favorited?: string;
+	tag?: string;
 	offset?: number;
 	limit?: number;
 };

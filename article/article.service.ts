@@ -133,9 +133,9 @@ export const deleteArticle = async (slug: string, currentUserId: string) => {
  */
 export const listArticles = async (
 	{
-		authorUsername,
-		favoritedByUsername,
-		tagName,
+		author: authorUsername,
+		favorited: favoritedByUsername,
+		tag: tagName,
 		offset,
 		limit,
 	}: ListArticlesQuery,
