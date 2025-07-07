@@ -9,7 +9,7 @@ import type {
 	ListArticlesQuery,
 	UpdateArticleDto,
 } from "./article.interface";
-import { slugify } from "./utils";
+import { slugify } from "./article.utils";
 
 export const createArticle = async (
 	article: CreateArticleDto,
