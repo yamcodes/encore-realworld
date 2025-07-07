@@ -1,7 +1,6 @@
 // TODO: arguably Dto's shouldn't be known to the service layer
 
 import { db } from "@/database";
-import { slugify } from "@/shared/utils";
 import type {
 	CreateArticleDto,
 	FavoriteArticleResult,
@@ -10,6 +9,7 @@ import type {
 	ListArticlesQuery,
 	UpdateArticleDto,
 } from "./article.interface";
+import { slugify } from "./utils";
 
 export const createArticle = async (
 	article: CreateArticleDto,
