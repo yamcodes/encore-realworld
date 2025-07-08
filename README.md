@@ -14,7 +14,7 @@
 
 ## What is this?
 
-This project is a fullstack implementation of the [RealWorld](https://github.com/gothinkster/realworld) backend API using [Encore.ts](https://encore.dev/docs/ts) and [Prisma](https://www.prisma.io/). It demonstrates modern TypeScript, API design, and database best practices in a real-world scenario.
+This project is an implementation of the [RealWorld](https://github.com/gothinkster/realworld) backend API using [Encore.ts](https://encore.dev/docs/ts) and [Prisma](https://www.prisma.io/). It demonstrates modern TypeScript, API design, and database best practices in a real-world scenario.
 
 - **Encore.ts**: Cloud-native backend framework for TypeScript
 - **Prisma**: Type-safe ORM for PostgreSQL
