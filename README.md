@@ -3,6 +3,7 @@
 <h1>Encore RealWorld</h1>
 
 [![License](https://custom-icon-badges.demolab.com/github/license/yamcodes/encore-realworld?label=License&color=blue&logo=law&labelColor=0d1117)](https://github.com/yamcodes/encore-realworld/blob/main/LICENSE)
+[![Encore.ts](https://custom-icon-badges.demolab.com/badge/Encore.ts-eeeee1.svg?logo=encore)](https://encore.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Biome](https://img.shields.io/badge/Biome-24272f?logo=biome&logoColor=f6f6f9)](https://biomejs.dev/)
 [![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/encore-realworld?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/encore-realworld/stargazers/)
