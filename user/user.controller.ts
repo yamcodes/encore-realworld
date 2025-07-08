@@ -13,7 +13,7 @@ import * as UserService from "./user.service";
  * Counts and returns the number of existing users
  */
 export const count = api(
-	{ method: "GET", path: "/count/users", auth: false },
+	{ method: "GET", path: "/count/users", auth: true },
 	async (): Promise<{
 		count: number;
 	}> => {
