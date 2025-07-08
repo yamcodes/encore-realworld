@@ -1,12 +1,9 @@
-// TODO: arguably Dto's shouldn't be known to the service layer
-
 import log from "encore.dev/log";
 import { db } from "~/database";
 import { SelfDeleteError, SelfUpdateError } from "./article.errors";
 import type {
 	CreateArticleDto,
 	FavoriteArticleResult,
-	// TODO: We should arguably not import "Query" types in the service layer
 	FeedArticlesQuery,
 	ListArticlesQuery,
 	UpdateArticleDto,
