@@ -23,6 +23,7 @@ This project is an implementation of the [RealWorld](https://github.com/gothinks
 ## Project Structure
 
 - `article/`, `comment/`, `user/`, etc.: Feature modules implementing RealWorld API endpoints
+- `auth/`: Authentication handler + encompassing gateway
 - `database/`: Prisma schema, migrations, and database client setup
 - `shared/`: Shared constants, utilities, and types
 - `encore.gen/`, `.encore/`: Encore-generated code, created by running `encore dev` (or `pnpm dev`) (do not edit manually)
