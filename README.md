@@ -1,92 +1,79 @@
-# Encore + Prisma TypeScript Example
+<div align="center">
 
-This is a RESTful API Starter with [Prisma](https://db.io) as ORM to handle database CRUD operations.
+<h1>Encore RealWorld</h1>
 
-## Developing locally
+[![License](https://custom-icon-badges.demolab.com/github/license/yamcodes/encore-realworld?label=License&color=blue&logo=law&labelColor=0d1117)](https://github.com/yamcodes/encore-realworld/blob/main/LICENSE)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Biome](https://img.shields.io/badge/Biome-24272f?logo=biome&logoColor=f6f6f9)](https://biomejs.dev/)
+[![Star](https://custom-icon-badges.demolab.com/github/stars/yamcodes/encore-realworld?logo=star&logoColor=373737&label=Star)](https://github.com/yamcodes/encore-realworld/stargazers/)
 
-When you have [installed Encore](https://encore.dev/docs/ts/install), you can create a new Encore application and clone this example with this command.
+**Encore.ts + Prisma implementation of the [RealWorld API Spec](https://github.com/gothinkster/realworld/tree/main/api)**
 
-```bash
-encore app create --example=ts/prisma
-```
+</div>
 
-## Running locally
+## What is this?
 
-```bash
-encore run
-```
+This project is a fullstack implementation of the [RealWorld](https://github.com/gothinkster/realworld) backend API using [Encore.ts](https://encore.dev/docs/ts) and [Prisma](https://www.prisma.io/). It demonstrates modern TypeScript, API design, and database best practices in a real-world scenario.
 
-While `encore run` is running, open <http://localhost:9400/> to view Encore's [local developer dashboard](https://encore.dev/docs/ts/observability/dev-dash).
+- **Encore.ts**: Cloud-native backend framework for TypeScript
+- **Prisma**: Type-safe ORM for PostgreSQL
+- **Biome**: Code quality and formatting
 
-## Configure Prisma
+## Project Structure
 
-Get the connection string to the shadow database by running:
+- `article/`, `comment/`, `user/`, etc.: Feature modules implementing RealWorld API endpoints
+- `database/`: Prisma schema, migrations, and database client setup
+- `shared/`: Shared constants, utilities, and types
+- `encore.gen/`: Encore-generated code (do not edit manually)
 
-```
-encore db conn-uri encore_prisma_test --shadow
+## Environment Configuration
 
-```
+- Copy `.env.example` to `.env` and fill in the required values:
+  ```bash
+  cp .env.example .env
+  ```
+- Encore and Prisma will use this file for database and other environment variables.
 
-Then edit `users/prisma/schema.prisma` replace `<paste shadow db connection string here>` with the output of the above command.
+## Development
 
+1. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+2. **Start Encore in development mode** (provisions DB, runs migrations, starts API server)
+   ```bash
+   pnpm dev
+   ```
+3. **Open the local Encore dashboard**
+   - Visit the dashboard (URL will be printed in the console) for API docs, traces, and infra.
+4. **Open Prisma Studio** (optional, for DB browsing)
+   ```bash
+   pnpm db:studio
+   ```
 
-## Using the API
+## Database Management
 
-Counts and returns the number of existing users
+- **Reset the database** (drops and recreates all tables):
+  ```bash
+  pnpm db:reset
+  ```
+- **Generate Prisma client** (after schema changes):
+  ```bash
+  pnpm db:generate
+  ```
+- **Push schema to DB** (for prototyping only):
+  ```bash
+  pnpm db:push
+  ```
 
-```bash
-curl 'http://localhost:4000/count/users'
-```
+## Building for Production
 
-Create a new user
+Encore handles builds and deployments via its own CLI and cloud platform. See [Encore docs](https://encore.dev/docs/ts/deploy) for details.
 
-```bash
-curl 'http://localhost:4000/users' -d '{"name":"John","surname":"Doe"}'
-```
+## Contributing
 
-Get all users data
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines and setup instructions.
 
-```bash
-curl 'http://localhost:4000/users'
+---
 
-# for paginated data:
-curl 'http://localhost:4000/users?page=1&limit=10'
-```
-
-Get user data by id
-
-```bash
-curl 'http://localhost:4000/users/:id'
-```
-
-Update user data
-
-```bash
-# partial update
-curl -XPATCH 'http://localhost:4000/users/:id' -d '{"data":{"name":"Johnny"}}'
-
-# update complete data
-curl -XPATCH 'http://localhost:4000/users/:id' -d '{"data":{"name":"Mary","surname":"Jane"}}'
-```
-
-Delete an user by id
-
-```bash
-curl -X DELETE 'http://localhost:4000/users/:id'
-```
-
-## Deployment
-
-Deploy your application to a staging environment in Encore's free development cloud:
-
-```bash
-git add -A .
-git commit -m 'Commit message'
-git push encore
-```
-
-Then head over to the [Cloud Dashboard](https://app.encore.dev) to monitor your deployment and find your production URL.
-
-From there you can also connect your own AWS or GCP account to use for deployment.
-
-Now off you go into the clouds!
+**Reference:** [RealWorld API Spec](https://github.com/gothinkster/realworld/tree/main/api)
