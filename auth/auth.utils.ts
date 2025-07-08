@@ -1,15 +1,16 @@
 import type { Header } from "encore.dev/api";
 import { APIError } from "encore.dev/api";
+import { secret } from "encore.dev/config";
 import * as jose from "jose";
 import type { JwtPayload } from "~/shared/types";
 import { getAuthData } from "~encore/auth";
+import { name } from "../package.json";
 import { InvalidTokenError, NoUserIdError } from "./auth.errors";
 
+const jwtSecret = secret("JWT_SECRET");
+
 export const verifyToken = async (token: string) => {
-	const name = "encore-realworld"; // TODO: get this from package.json or an env variable
-	// TODO: use `import { secret } from "encore.dev/config"`
-	const rawSecret = "my-secret"; // TODO: change to env.JWT_SECRET
-	const secret = new TextEncoder().encode(rawSecret);
+	const secret = new TextEncoder().encode(jwtSecret());
 
 	try {
 		const { payload } = await jose.jwtVerify(token, secret, {
