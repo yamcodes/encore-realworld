@@ -1,6 +1,7 @@
 import type { User } from "@prisma/client";
 import { db } from "~/database";
 import { assertNoConflicts } from "~/shared/errors";
+import { InvalidCredentialsError } from "./user.errors";
 import type {
 	CreateUserDto,
 	LoginUserDto,
@@ -18,7 +19,7 @@ export const login = async (
 		where: { email: data.email },
 	});
 	if (!(await verifyPassword(data.password, user.password)))
-		throw new Error("Invalid credentials");
+		throw InvalidCredentialsError;
 
 	const token = await signToken({
 		uid: user.id,

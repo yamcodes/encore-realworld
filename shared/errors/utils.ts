@@ -1,3 +1,5 @@
+import { conflictingFieldsError } from "./conflicting-fields.error";
+
 type Fields<T extends string> = Partial<Record<T, string>>;
 
 /**
@@ -33,9 +35,6 @@ export async function assertNoConflicts<T extends string>(
 	);
 
 	if (conflictingFields.length > 0) {
-		// throw new ConflictingFieldsError(entity, conflictingFields);
-		throw new Error(
-			`Conflicting fields in ${entity}: ${conflictingFields.join(", ")}`,
-		);
+		throw conflictingFieldsError(entity, conflictingFields);
 	}
 }

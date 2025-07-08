@@ -1,6 +1,8 @@
 // TODO: arguably Dto's shouldn't be known to the service layer
 
+import log from "encore.dev/log";
 import { db } from "~/database";
+import { SelfDeleteError, SelfUpdateError } from "./article.errors";
 import type {
 	CreateArticleDto,
 	FavoriteArticleResult,
@@ -65,8 +67,7 @@ export const updateArticle = async (
 	});
 
 	if (existingArticle.authorId !== currentUserId) {
-		// TODO: better error handling
-		throw new Error("you can only update your own articles");
+		throw SelfUpdateError;
 	}
 
 	const newSlug =
@@ -116,8 +117,11 @@ export const deleteArticle = async (slug: string, currentUserId: string) => {
 	});
 
 	if (existingArticle.authorId !== currentUserId) {
-		// TODO: better error handling
-		throw new Error("you can only delete your own articles");
+		log.debug("test", {
+			existingArticle,
+			currentUserId,
+		});
+		throw SelfDeleteError;
 	}
 
 	await db.article.delete({

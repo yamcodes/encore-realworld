@@ -3,6 +3,7 @@ import { APIError } from "encore.dev/api";
 import * as jose from "jose";
 import type { JwtPayload } from "~/shared/types";
 import { getAuthData } from "~encore/auth";
+import { InvalidTokenError, NoUserIdError } from "./auth.errors";
 
 export const verifyToken = async (token: string) => {
 	const name = "encore-realworld"; // TODO: get this from package.json or an env variable
@@ -16,7 +17,7 @@ export const verifyToken = async (token: string) => {
 		});
 		return payload as JwtPayload;
 	} catch {
-		throw new Error("Invalid token");
+		throw InvalidTokenError;
 	}
 };
 
@@ -46,6 +47,6 @@ export const getCurrentUserId = () => {
  */
 export const getCurrentUserIdOrThrow = () => {
 	const id = getCurrentUserId();
-	if (!id) throw APIError.unauthenticated("no user id");
+	if (!id) throw NoUserIdError;
 	return id;
 };

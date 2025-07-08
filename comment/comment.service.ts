@@ -1,4 +1,5 @@
 import { db } from "~/database";
+import { CommentNotFoundError, SelfDeleteError } from "./comment.errors";
 
 export const listComments = async (
 	articleSlug: string,
@@ -71,13 +72,11 @@ export const deleteComment = async (
 	});
 
 	if (existingComment.articleId !== article.id) {
-		// TODO: Better error handling
-		throw new Error("comment not found");
+		throw CommentNotFoundError;
 	}
 
 	if (existingComment.authorId !== currentUserId) {
-		// TODO: Better error handling
-		throw new Error("you can only delete your own comments");
+		throw SelfDeleteError;
 	}
 
 	await db.comment.delete({ where: { id: commentId } });

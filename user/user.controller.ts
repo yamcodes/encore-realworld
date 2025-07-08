@@ -1,5 +1,12 @@
-import { APIError, api } from "encore.dev/api";
+import { api } from "encore.dev/api";
 import { getCurrentUserIdOrThrow } from "~/auth";
+import {
+	UserCountError,
+	UserCreateError,
+	UserGetError,
+	UserLoginError,
+	UserUpdateError,
+} from "./user.errors";
 import type {
 	CreateUserDto,
 	LoginUserDto,
@@ -20,10 +27,8 @@ export const count = api(
 		try {
 			const result = await UserService.count();
 			return { count: result };
-		} catch (error) {
-			throw APIError.aborted(
-				error?.toString() || "Error counting existing users",
-			);
+		} catch {
+			throw UserCountError;
 		}
 	},
 );
@@ -40,8 +45,8 @@ export const registration = api(
 		try {
 			const result = await UserService.create(data);
 			return toResponse(result.user, result.token);
-		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error creating the user");
+		} catch {
+			throw UserCreateError;
 		}
 	},
 );
@@ -58,8 +63,8 @@ export const authentication = api(
 		try {
 			const { user, token } = await UserService.login(data);
 			return toResponse(user, token);
-		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error logging in");
+		} catch {
+			throw UserLoginError;
 		}
 	},
 );
@@ -71,8 +76,8 @@ export const getCurrentUser = api(
 			const id = getCurrentUserIdOrThrow();
 			const result = await UserService.findOne(id);
 			return toResponse(result.user, result.token);
-		} catch (error) {
-			throw APIError.aborted(error?.toString() || "Error getting current user");
+		} catch {
+			throw UserGetError;
 		}
 	},
 );
@@ -84,10 +89,8 @@ export const updateCurrentUser = api(
 			const id = getCurrentUserIdOrThrow();
 			const result = await UserService.update(id, data);
 			return toResponse(result.user, result.token);
-		} catch (error) {
-			throw APIError.aborted(
-				error?.toString() || "Error updating current user",
-			);
+		} catch {
+			throw UserUpdateError;
 		}
 	},
 );

@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
 import { db } from "~/database";
+import { SelfFollowError, SelfUnfollowError } from "./profile.errors";
 
 export const getProfile = async (
 	username: string,
@@ -28,10 +29,7 @@ export const follow = async (username: string, currentUserId: string) => {
 		where: { username },
 	});
 	// TODO: Make this a db constraint
-	if (profile.id === currentUserId) {
-		// TODO: Better error handling
-		throw new Error("Cannot follow yourself");
-	}
+	if (profile.id === currentUserId) throw SelfFollowError;
 	await db.user.update({
 		where: { id: currentUserId },
 		data: { following: { connect: { id: profile.id } } },
@@ -44,10 +42,7 @@ export const unfollow = async (username: string, currentUserId: string) => {
 		where: { username },
 	});
 	// TODO: Make this a db constraint
-	if (profile.id === currentUserId) {
-		// TODO: Better error handling
-		throw new Error("Cannot unfollow yourself");
-	}
+	if (profile.id === currentUserId) throw SelfUnfollowError;
 	await db.user.update({
 		where: { id: currentUserId },
 		data: { following: { disconnect: { id: profile.id } } },

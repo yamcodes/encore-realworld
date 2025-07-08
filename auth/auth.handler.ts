@@ -1,9 +1,10 @@
 // See https://encore.dev/docs/ts/develop/auth
 
-import { APIError, Gateway } from "encore.dev/api";
+import { Gateway } from "encore.dev/api";
 import { authHandler } from "encore.dev/auth";
 import log from "encore.dev/log";
 import { getToken, verifyToken } from "~/auth/auth.utils";
+import { InvalidTokenError, NoTokenError } from "./auth.errors";
 import type { AuthData, AuthParams } from "./auth.interface";
 
 /**
@@ -12,12 +13,12 @@ import type { AuthData, AuthParams } from "./auth.interface";
 export const auth = authHandler<AuthParams, AuthData>(async (params) => {
 	try {
 		const token = getToken(params.authorization);
-		if (!token) throw APIError.unauthenticated("no token provided");
+		if (!token) throw NoTokenError;
 		const decoded = await verifyToken(token);
 		return { userID: decoded.uid };
 	} catch (e) {
 		log.error(e);
-		throw APIError.unauthenticated("invalid token", e as Error);
+		throw InvalidTokenError;
 	}
 });
 
