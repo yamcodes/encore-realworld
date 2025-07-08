@@ -25,7 +25,7 @@ This project is a fullstack implementation of the [RealWorld](https://github.com
 - `article/`, `comment/`, `user/`, etc.: Feature modules implementing RealWorld API endpoints
 - `database/`: Prisma schema, migrations, and database client setup
 - `shared/`: Shared constants, utilities, and types
-- `encore.gen/`: Encore-generated code (do not edit manually)
+- `encore.gen/`, `.encore/`: Encore-generated code, created by running `encore dev` (or `pnpm dev`) (do not edit manually)
 
 ## Environment Configuration
 
@@ -70,10 +70,6 @@ This project is a fullstack implementation of the [RealWorld](https://github.com
 ## Building for Production
 
 Encore handles builds and deployments via its own CLI and cloud platform. See [Encore docs](https://encore.dev/docs/ts/deploy) for details.
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines and setup instructions.
 
 ---
 
