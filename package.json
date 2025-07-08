@@ -1,9 +1,6 @@
 {
-	"name": "encore-prisma-example",
-	"private": true,
-	"version": "0.0.1",
-	"description": "Encore + Prisma Typescript Example",
-	"license": "MPL-2.0",
+	"name": "encore-realworld",
+	"description": "Encore + Prisma RealWorld Example",
 	"type": "module",
 	"scripts": {
 		"dev": "encore run",
