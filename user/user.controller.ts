@@ -1,5 +1,5 @@
 import { APIError, api } from "encore.dev/api";
-import { getAuthData } from "~encore/auth";
+import { getCurrentUserIdOrThrow } from "~/auth";
 import type {
 	CreateUserDto,
 	LoginUserDto,
@@ -68,8 +68,7 @@ export const getCurrentUser = api(
 	{ method: "GET", path: "/user", auth: true },
 	async (): Promise<UserResponse> => {
 		try {
-			const id = getAuthData()?.userID;
-			if (!id) throw APIError.unauthenticated("no user id");
+			const id = getCurrentUserIdOrThrow();
 			const result = await UserService.findOne(id);
 			return toResponse(result.user, result.token);
 		} catch (error) {
@@ -82,8 +81,7 @@ export const updateCurrentUser = api(
 	{ method: "PUT", path: "/user", auth: true },
 	async (data: UpdateUserDto): Promise<UserResponse> => {
 		try {
-			const id = getAuthData()?.userID;
-			if (!id) throw APIError.unauthenticated("no user id");
+			const id = getCurrentUserIdOrThrow();
 			const result = await UserService.update(id, data);
 			return toResponse(result.user, result.token);
 		} catch (error) {

@@ -1,5 +1,5 @@
-import { APIError, api } from "encore.dev/api";
-import { getAuthData } from "~encore/auth";
+import { api } from "encore.dev/api";
+import { getCurrentUserId, getCurrentUserIdOrThrow } from "~/auth";
 import type {
 	ArticleResponse,
 	ArticlesResponse,
@@ -14,8 +14,7 @@ import * as ArticleService from "./article.service";
 export const createArticle = api(
 	{ method: "POST", path: "/articles", auth: true },
 	async (data: CreateArticleDto): Promise<ArticleResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const createdArticle = await ArticleService.createArticle(
 			data,
 			currentUserId,
@@ -35,8 +34,7 @@ export const updateArticle = api(
 		slug: string;
 		data: UpdateArticleDto;
 	}): Promise<ArticleResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const updatedArticle = await ArticleService.updateArticle(
 			slug,
 			data,
@@ -49,8 +47,7 @@ export const updateArticle = api(
 export const deleteArticle = api(
 	{ method: "DELETE", path: "/articles/:slug", auth: true },
 	async ({ slug }: { slug: string }): Promise<void> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		await ArticleService.deleteArticle(slug, currentUserId);
 	},
 );
@@ -61,7 +58,7 @@ export const deleteArticle = api(
 export const listArticles = api(
 	{ method: "GET", path: "/articles" },
 	async (query: ListArticlesQuery): Promise<ArticlesResponse> => {
-		const currentUserId = getAuthData()?.userID;
+		const currentUserId = getCurrentUserId();
 		const enrichedArticles = await ArticleService.listArticles(
 			query,
 			currentUserId,
@@ -76,7 +73,7 @@ export const listArticles = api(
 export const getArticle = api(
 	{ method: "GET", path: "/articles/:slug" },
 	async ({ slug }: { slug: string }): Promise<ArticleResponse> => {
-		const currentUserId = getAuthData()?.userID;
+		const currentUserId = getCurrentUserId();
 		const article = await ArticleService.getArticle(slug, currentUserId);
 		return toResponse(article, { currentUserId });
 	},
@@ -85,8 +82,7 @@ export const getArticle = api(
 export const feedArticles = api(
 	{ method: "GET", path: "/articles/feed", auth: true },
 	async (query: FeedArticlesQuery): Promise<ArticlesResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const enrichedArticles = await ArticleService.feedArticles(
 			query,
 			currentUserId,
@@ -98,8 +94,7 @@ export const feedArticles = api(
 export const favoriteArticle = api(
 	{ method: "POST", path: "/articles/:slug/favorite", auth: true },
 	async ({ slug }: { slug: string }): Promise<ArticleResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const { article, favorited, favoritesCount } =
 			await ArticleService.favoriteArticle(slug, currentUserId);
 		return toResponse(article, {
@@ -113,8 +108,7 @@ export const favoriteArticle = api(
 export const unfavoriteArticle = api(
 	{ method: "DELETE", path: "/articles/:slug/favorite", auth: true },
 	async ({ slug }: { slug: string }): Promise<ArticleResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const { article, favorited, favoritesCount } =
 			await ArticleService.unfavoriteArticle(slug, currentUserId);
 		return toResponse(article, { currentUserId, favorited, favoritesCount });

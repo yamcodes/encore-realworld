@@ -1,5 +1,5 @@
-import { APIError, api } from "encore.dev/api";
-import { getAuthData } from "~encore/auth";
+import { api } from "encore.dev/api";
+import { getCurrentUserId, getCurrentUserIdOrThrow } from "~/auth";
 import type { CommentResponse, CommentsResponse } from "./comment.interface";
 import { toCommentResponse, toCommentsResponse } from "./comment.mappers";
 import * as CommentService from "./comment.service";
@@ -7,7 +7,7 @@ import * as CommentService from "./comment.service";
 export const listComments = api(
 	{ method: "GET", path: "/articles/:slug/comments" },
 	async ({ slug }: { slug: string }): Promise<CommentsResponse> => {
-		const currentUserId = getAuthData()?.userID;
+		const currentUserId = getCurrentUserId();
 		const comments = await CommentService.listComments(slug, currentUserId);
 		return toCommentsResponse(comments, { currentUserId });
 	},
@@ -22,8 +22,7 @@ export const createComment = api(
 		slug: string;
 		body: string;
 	}): Promise<CommentResponse> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		const createdComment = await CommentService.createComment(
 			slug,
 			body,
@@ -36,8 +35,7 @@ export const createComment = api(
 export const deleteComment = api(
 	{ method: "DELETE", path: "/articles/:slug/comments/:id" },
 	async ({ slug, id }: { slug: string; id: string }): Promise<void> => {
-		const currentUserId = getAuthData()?.userID;
-		if (!currentUserId) throw APIError.unauthenticated("no user id");
+		const currentUserId = getCurrentUserIdOrThrow();
 		return await CommentService.deleteComment(slug, id, currentUserId);
 	},
 );

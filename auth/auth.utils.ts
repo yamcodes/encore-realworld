@@ -1,6 +1,8 @@
 import type { Header } from "encore.dev/api";
+import { APIError } from "encore.dev/api";
 import * as jose from "jose";
 import type { JwtPayload } from "~/shared/types";
+import { getAuthData } from "~encore/auth";
 
 export const verifyToken = async (token: string) => {
 	const name = "encore-realworld"; // TODO: get this from package.json or an env variable
@@ -26,4 +28,24 @@ export const getToken = (
 ): string | undefined => {
 	const [, token] = authorization.split(" ");
 	return token;
+};
+
+/**
+ * Get the current user id or undefined if no user id is found
+ * @returns the current user id or undefined if no user id is found
+ */
+export const getCurrentUserId = () => {
+	const id = getAuthData()?.userID;
+	return id;
+};
+
+/**
+ * Get the current user id or throw an error if no user id is found
+ * @returns the current user id
+ * @throws an error if no user id is found, see {@link APIError.unauthenticated}
+ */
+export const getCurrentUserIdOrThrow = () => {
+	const id = getCurrentUserId();
+	if (!id) throw APIError.unauthenticated("no user id");
+	return id;
 };
