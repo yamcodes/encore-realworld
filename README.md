@@ -70,7 +70,7 @@ This project is an implementation of the [RealWorld](https://github.com/gothinks
 
 ## Building for Production
 
-Encore handles builds and deployments via its own CLI and cloud platform. See [Encore docs](https://encore.dev/docs/ts/deploy) for details.
+Encore handles builds and deployments via its own CLI and cloud platform. See [Encore cloud](https://encore.dev/docs/platform) for details.
 
 ---
 
